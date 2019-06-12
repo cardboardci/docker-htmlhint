@@ -19,3 +19,9 @@ shellcheck:
   image: cardboardci/shellcheck:0.6.0
   script:
     - shellcheck provision/*.sh
+
+hadolint:
+  stage: "Validate"
+  image: cardboardci/hadolint:1.15.0
+  script:
+    - hadolint Dockerfile*
