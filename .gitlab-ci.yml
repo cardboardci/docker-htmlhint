@@ -1,0 +1,21 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+stages:
+  - "Validate"
+  - "Build"
+  - "Test"
+  - "Analyze"
+  - "Release"
+  - "Deploy"
+
+##
+## Validate
+##
+shellcheck:
+  stage: "Validate"
+  image: cardboardci/shellcheck:0.6.0
+  script:
+    - shellcheck provision/*.sh
