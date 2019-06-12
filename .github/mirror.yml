@@ -1,0 +1,8 @@
+---
+name: github
+provider: github.com
+repository: docker-htmlhint
+url: https://github.com/cardboardci/docker-htmlhint
+clone:
+  ssh: git@github.com:cardboardci/docker-htmlhint.git
+  https: https://github.com/cardboardci/docker-htmlhint.git
