@@ -49,10 +49,10 @@ docker.hub:
     - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
     - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:latest"
     - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:${VERSION}"
-    - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:${VERSION}+${DATE}"
+    - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:${VERSION}-${DATE}"
     - echo "$HUB_REGISTRY_PASSWORD" | docker login -u "$HUB_REGISTRY_USER" --password-stdin
     - docker push "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:latest"
     - docker push "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:${VERSION}"
-    - docker push "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:${VERSION}+${DATE}"
+    - docker push "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:${VERSION}-${DATE}"
   only:
     - master
