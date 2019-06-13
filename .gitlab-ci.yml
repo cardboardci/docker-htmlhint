@@ -35,3 +35,24 @@ build:
     - docker build --pull --build-arg build_date="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" --build-arg version="${VERSION}" --build-arg vcs_ref="${CI_COMMIT_SHORT_SHA}" -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+
+##
+## Deploy
+##
+docker.hub:
+  stage: "Deploy"
+  script:
+    - source deploy/hub.docker.config
+    - export VERSION="$(cat VERSION)"
+    - export DATE="$(date -u +"%Y%m%d")"
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+    - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:latest"
+    - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:${VERSION}"
+    - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:${VERSION}+${DATE}"
+    - echo "$HUB_REGISTRY_PASSWORD" | docker login -u "$HUB_REGISTRY_USER" --password-stdin
+    - docker push "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:latest"
+    - docker push "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:${VERSION}"
+    - docker push "docker.io/${HUB_NAMESPACE}/${HUB_PROJECT}:${VERSION}+${DATE}"
+  only:
+    - master
