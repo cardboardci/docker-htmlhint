@@ -1,5 +1,15 @@
-FROM alpine:3.10.3
-COPY rootfs/ /
+FROM cardboardci/ci-core:latest
+USER root
+
+COPY provision/pkglist /cardboardci/pkglist
+RUN apt-get update \
+    && xargs -a /cardboardci/pkglist apt-get install -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN npm install htmlhint -g
+
+USER cardboardci
 
 ##
 ## Image Metadata
