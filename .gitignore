@@ -1,3 +1,15 @@
 # Archives
 *.tar.gz
 *.tar.xz
+*.zip
+
+# Temporary files
+bin/
+tmp/
+*.tmp
+
+# Package dependency files
+*.bak
+
+# Log files
+*.log
