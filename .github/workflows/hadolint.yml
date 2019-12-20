@@ -1,0 +1,16 @@
+name: Linting of Dockerfile
+on:
+  push:
+    paths:
+      - Dockerfile
+      - .github/workflows/hadolint.yml
+
+jobs:
+  hadolint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Hadolint
+        uses: docker://docker.io/cardboardci/hadolint:latest
+        with:
+          args: "hadolint Dockerfile"
