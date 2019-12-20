@@ -1,0 +1,17 @@
+name: Linting of Dockerfile
+on:
+  push:
+    paths:
+      - Dockerfile
+      - .github/workflows/hadolint.yml
+
+jobs:
+  hadolint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run hadolint on the primary Dockerfile
+        uses: burdzwastaken/hadolint-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HADOLINT_ACTION_DOCKERFILE_FOLDER: .
