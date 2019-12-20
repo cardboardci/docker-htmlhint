@@ -9,7 +9,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN npm install htmlhint -g
+RUN npm install htmlhint@0.11.0 -g
 
 USER cardboardci
 
