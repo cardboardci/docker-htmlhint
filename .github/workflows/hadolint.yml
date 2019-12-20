@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Run hadolint on the primary Dockerfile
-        uses: burdzwastaken/hadolint-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HADOLINT_ACTION_DOCKERFILE_FOLDER: .
+      - name: Hadolint
+        uses: docker://docker.io/cardboardci/hadolint:latest
+        with:
+          args: "hadolint Dockerfile"
