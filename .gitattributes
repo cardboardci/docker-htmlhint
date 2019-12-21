@@ -1,0 +1,10 @@
+# Set default handling of line terminators:
+* text=auto
+
+# Handling of common file types in this repository:
+*.sh text
+*.ps1 text
+*.txt text
+*.yaml text
+*.yml text
+*.csv text
