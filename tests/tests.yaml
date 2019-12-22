@@ -1,0 +1,11 @@
+schemaVersion: "2.0.0"
+
+metadataTest:
+  labels:
+    - key: 'org.label-schema.vendor'
+      value: cardboardci
+  exposedPorts: []
+  volumes: []
+  entrypoint: ["/bin/bash"]
+  cmd: []
+  workdir: "/cardboardci/workspace" 
