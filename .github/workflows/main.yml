@@ -1,0 +1,56 @@
+name: Build
+on:
+  push:
+    paths:
+      - provision/*
+      - provision/*/*
+      - provision/*/*/*
+      - rootfs/*
+      - rootfs/*/*
+      - rootfs/*/*/*
+      - tests/*
+      - tests/*/*
+      - Dockerfile
+      - .github/workflows/main.yml
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set versions
+        id: version
+        run: |
+          echo ::set-output name=docker_version::0.0.1
+
+      - name: Set tag var
+        id: vars
+        run: |
+          echo ::set-output name=docker_image::docker.io/cardboardci/htmlhint
+          echo ::set-output name=docker_tag::${{ steps.version.outputs.docker_version }}
+          echo ::set-output name=docker_tag_date::${{ steps.version.outputs.docker_version }}-$(date -u +'%Y%m%d')
+
+      - name: Build
+        run: |
+          docker build . \
+            --file Dockerfile \
+            --tag ${{ steps.vars.outputs.docker_image }}:${{ steps.vars.outputs.docker_tag }} \
+            --tag ${{ steps.vars.outputs.docker_image }}:${{ steps.vars.outputs.docker_tag_date }}
+
+      - name: Tests
+        uses: docker://gcr.io/gcp-runtimes/container-structure-test
+        with:
+          args: "test --config tests/tests.yaml --image ${{ steps.vars.outputs.docker_image }}:${{ steps.vars.outputs.docker_tag }}"
+
+      - name: Scan with Phonito Security
+        uses: phonito/phonito-scanner-action@master
+        with:
+          image: ${{ steps.vars.outputs.docker_image }}:${{ steps.vars.outputs.docker_tag_commit }}
+          phonito-token: ${{ secrets.PHONITO_TOKEN }}
+
+      - name: Deploy to DockerHub
+        if: github.ref == 'refs/heads/master'
+        run: |
+          echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          docker push ${{ steps.vars.outputs.docker_image }}
