@@ -8,7 +8,7 @@ on:
     paths:
       - .github/workflows/versions.yml
       - provision/pkglist
-      - tools/upgrade.bash
+      - tools/apt.bash
 
 jobs:
   apt-get:
@@ -18,7 +18,7 @@ jobs:
       - name: Review and upgrade the dependencies
         uses: docker://cardboardci/ci-core:privileged
         with:
-          args: "tools/upgrade.bash"
+          args: "tools/apt.bash"
       - name: Commit the dependency changes
         uses: cardboardci/github-actions/auto-commit@master
         env:
