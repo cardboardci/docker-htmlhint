@@ -1,0 +1,17 @@
+slug: docker-htmlhint
+description: The static code analysis tool you need for your HTML.
+project: cardboardci
+namespace: docker
+status: archived
+icon: icon.svg
+license:
+  type: MIT
+  content: Jonathan Beverly <jrbeverly>
+  year: 2019
+topics: |-
+  [
+    "html",
+    "dockerfile",
+    "code-quality",
+    "code-analysis"
+  ]
